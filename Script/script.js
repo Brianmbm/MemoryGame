@@ -4,6 +4,20 @@ const images =['card_1.jpg', 'card_2.jpg', 'card_3.jpg']
 //Shuffle the cards before putting them in column (Fishe-Yates Shuffle, answer from Stackoverflow)
 
 
+//TODO: revert card to cardback after two clicks if cards not same
+//TODO: remove cards if two of the same
+//TODO: add two cards after three "rounds", the new cards should not be the same
+//TODO: end game if no cards left or more than 3 rows of cards
+//TODO: Keep track of highscore
+//TODO: Initial loading splash screen view
+//TODO: Rules guide view
+//TODO: About info view
+//TODO: Game over view
+//TODO: Congratulations view
+//MUSTS: Animations, webcomponents, validation.pdf to verify CSS, Javascript and automated testing. Responsive (large screen and phone screen)
+
+//QUESTION: Should the cards be shown in the beginning?
+
 //Initialize game/gameboard
 function createGameBoard() {
 
@@ -24,6 +38,7 @@ function createGameBoard() {
         const imageName = shuffledImages[counter++];
         cardDiv.style.backgroundImage = `url('../../Resources/cardBack.jpg')`;
         cardDiv.setAttribute('data-image', imageName);
+        console.log(imageName)
         cardDiv.addEventListener('click', () => toggleCard(cardDiv));
         columnDiv.appendChild(cardDiv);
     }
