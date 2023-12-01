@@ -6,13 +6,19 @@ body{
     height: 100vh;
     background-color: #fbeace;
 }
+.maintitle {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 4vh;
+}
 .gameboard {
     display: flex;
     width:fit-content;
-    height:85vh;
+    border-radius: 40px;
+    padding: 2vh;
+    height:80vh;
     gap: 1vh;
     justify-content: flex-end;
-    background-color: blue;
+    background-color: #5e8187;
     align-items: flex-end;
 }
 
@@ -22,7 +28,7 @@ body{
     width: fit-content;
     height: fit-content;
     justify-content: flex-end;
-    background-color: blueviolet;
+    background-color: #5e8187;
 
 }
 .card {
@@ -31,7 +37,8 @@ body{
     height: 21vh;
     display: flex;
     justify-content: flex-end;
-    font-size: 24px;
+    border-radius: 20px;
+    background-size:cover;
     cursor: pointer;
     margin: 1vh;
 }
