@@ -1,0 +1,36 @@
+body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #fbeace;
+}
+.screen {
+    display: flex;
+    width:fit-content;
+    height:85vh;
+    gap: 1vh;
+    justify-content: flex-end;
+    background-color: blue;
+    align-items: flex-end;
+}
+
+.column {
+    display: flex;
+    flex-direction: column-reverse;
+    width: fit-content;
+    height: fit-content;
+    justify-content: flex-end;
+    background-color: blueviolet;
+
+}
+.column > div {
+    background-color: red;
+    width: 15vh;
+    height: 21vh;
+    display: flex;
+    justify-content: flex-end;
+    font-size: 24px;
+    margin: 1vh;
+}
