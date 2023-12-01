@@ -11,14 +11,30 @@
 //FIXME: Currently three cards shuffled and dealt to individual column, shuffle six cards divide amongst both columns
 //MUSTS: Animations, webcomponents, validation.pdf to verify CSS, Javascript and automated testing. Responsive (large screen and phone screen)
 
+document.addEventListener('DOMContentLoaded', createStartScreen)
+
+
+function createStartScreen(){
+    const startscreenDiv = document.getElementById('start-screen');
+    document.getElementById('start-screen').style.display = "flex";
+    startscreenDiv.classList.add('startscreen')
+
+    startscreenDiv.addEventListener('click', function () {
+        document.getElementById('start-screen').style.display = "none";
+        createGameBoard()
+    })
+}
+
+
+//Add game board to DOM on start
+//document.addEventListener('DOMContentLoaded', createGameBoard)
 
 const images =['card_1.jpg', 'card_2.jpg', 'card_3.jpg']
 let selectedCards =[]
-
 //Create intial game/gameboard
 function createGameBoard() {
-
-    const gameBoardDiv = document.getElementById('game-board');
+    document.getElementById('main-game').style.display = "flex";
+    const gameBoardDiv = document.getElementById('game-board')
     gameBoardDiv.classList.add('gameboard')
     
 //Create two columns for the game board
@@ -35,15 +51,12 @@ function createGameBoard() {
         const imageName = shuffledImages[counter++];
         cardDiv.style.backgroundImage = `url('../../Resources/cardBack.jpg')`
         cardDiv.setAttribute('data-image', imageName);
-        console.log(imageName)
         cardDiv.addEventListener('click', () => toggleCard(cardDiv))
         columnDiv.appendChild(cardDiv)
     }
-        gameBoardDiv.appendChild(columnDiv);
+    gameBoardDiv.appendChild(columnDiv);
     }
 }
-//Add game board to DOM on start
-document.addEventListener('DOMContentLoaded', createGameBoard)
 
 //Shuffle the cards before putting them in column (Fishe-Yates Shuffle, answer from Stackoverflow)
 let shuffleCards = (array) => {

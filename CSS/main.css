@@ -3,13 +3,28 @@ body{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 100vh;
+    height: 98vh;
     background-color: #fbeace;
+}
+.startscreen{
+    background-color: black;
+    background-image: url('../../Resources/SplashscreenLoading.jpg');
+    background-size:95vh 98vh;
+    background-position: center;
+    width: 98vh;
+    height: 98vh;
+
+}
+.maingame {
+    display:none;
+    flex-direction: column;
+    align-items: center;
 }
 .maintitle {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 4vh;
     margin: 2vh;
+    
 }
 .gameboard {
     display: flex;
