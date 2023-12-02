@@ -3,7 +3,6 @@
 //TODO: add two cards after three "rounds", the new cards should not be the same
 //TODO: end game if no cards left or more than 3 rows of cards
 //TODO: Keep track of highscore
-//TODO: Initial loading splash screen view
 //TODO: Rules guide view
 //TODO: About info view
 //TODO: Game over view
@@ -15,25 +14,40 @@ document.addEventListener('DOMContentLoaded', createStartScreen)
 
 function createStartScreen(){
     const startscreenDiv = document.getElementById('start-screen');
-    startscreenDiv.classList.add('startscreen')
-
+    startscreenDiv.style.display = "flex"
+    startscreenDiv.style.height = "71vh"
+    startscreenDiv.style.width= "89vh"
+    startscreenDiv.style.backgroundImage = `url('../../Resources/SplashscreenLoading.jpg')`
     //On click remove splash screen, add game board
     startscreenDiv.addEventListener('click', function () {
-        document.getElementById('start-screen').style.display = "none";
+        startscreenDiv.style.display = "none"
+        createMenu()
+    })
+    }
+
+function createMenu(){
+    const menuDiv =document.getElementById('menu-game')
+    menuDiv.style.display = "flex"
+    menuDiv.style.height = "71vh"
+    menuDiv.style.width= "89vh"
+    menuDiv.style.backgroundImage=`url('../../Resources/SplashscreenMenu.jpg')`
+    const startButton = document.getElementById('start-button')
+    startButton.addEventListener('click', function () {
+        menuDiv.style.display = "none"
         createGameBoard()
     })
+    const quitButton = document.getElementById('quit-button')
+    quitButton.addEventListener('click', () => close())
 }
 
 
-
 //document.addEventListener('DOMContentLoaded', createGameBoard)
-
 const images =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
 let selectedCards =[]
 
 //Create intial game/gameboard
 function createGameBoard() {
-    document.getElementById('main-game').style.display = "flex";
+    document.getElementById('main-game').style.display = "flex"
     const gameBoardDiv = document.getElementById('game-board')
     let shuffledImages = shuffleCards(images)
     let counter = 0
