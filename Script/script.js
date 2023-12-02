@@ -8,7 +8,6 @@
 //TODO: About info view
 //TODO: Game over view
 //TODO: Congratulations view
-//FIXME: Currently three cards shuffled and dealt to individual column, shuffle six cards divide amongst both columns
 //MUSTS: Animations, webcomponents, validation.pdf to verify CSS, Javascript and automated testing. Responsive (large screen and phone screen)
 
 document.addEventListener('DOMContentLoaded', createStartScreen)
@@ -16,9 +15,9 @@ document.addEventListener('DOMContentLoaded', createStartScreen)
 
 function createStartScreen(){
     const startscreenDiv = document.getElementById('start-screen');
-    document.getElementById('start-screen').style.display = "flex";
     startscreenDiv.classList.add('startscreen')
 
+    //On click remove splash screen, add game board
     startscreenDiv.addEventListener('click', function () {
         document.getElementById('start-screen').style.display = "none";
         createGameBoard()
@@ -26,24 +25,24 @@ function createStartScreen(){
 }
 
 
-//Add game board to DOM on start
+
 //document.addEventListener('DOMContentLoaded', createGameBoard)
 
-const images =['card_1.jpg', 'card_2.jpg', 'card_3.jpg']
+const images =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
 let selectedCards =[]
+
 //Create intial game/gameboard
 function createGameBoard() {
     document.getElementById('main-game').style.display = "flex";
     const gameBoardDiv = document.getElementById('game-board')
-    gameBoardDiv.classList.add('gameboard')
-    
+    let shuffledImages = shuffleCards(images)
+    let counter = 0
+
 //Create two columns for the game board
     for (let i = 0; i < 2; i++) {
         const columnDiv = document.createElement('div')
         columnDiv.classList.add('column')
-        let shuffledImages = shuffleCards(images)
-        let counter = 0
-        
+
 //Create the cards in three rows
     for (let j = 0; j < 3; j++) {
         const cardDiv = document.createElement('div')

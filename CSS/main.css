@@ -5,8 +5,10 @@ body{
     flex-direction: column;
     height: 98vh;
     background-color: #fbeace;
+    font-family: 'Franklin Gothic Medium', sans-serif;
 }
 .startscreen{
+    display: flex;
     background-color: black;
     background-image: url('../../Resources/SplashscreenLoading.jpg');
     background-size:95vh 98vh;
@@ -21,9 +23,9 @@ body{
     align-items: center;
 }
 .maintitle {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 4vh;
     margin: 2vh;
+    letter-spacing: 0.7vh;
     
 }
 .gameboard {
@@ -43,7 +45,7 @@ body{
 .column {
     display: flex;
     flex-direction: column-reverse;
-    width: fit-content;
+    width: 17vh;
     height: fit-content;
     justify-content: flex-end;
     background-color: #5e8187;
