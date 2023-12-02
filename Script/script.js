@@ -1,12 +1,12 @@
 
 //TODO: revert card to cardback after two clicks if cards not same
-//TODO: add two cards after three "rounds", the new cards should not be the same
 //TODO: end game if no cards left or more than 3 rows of cards
 //TODO: Keep track of highscore
 //TODO: Rules guide view
 //TODO: About info view
 //TODO: Game over view
 //TODO: Congratulations view
+//TODO: Add "sure you want to quit" dialogue
 //MUSTS: Animations, webcomponents, validation.pdf to verify CSS, Javascript and automated testing. Responsive (large screen and phone screen)
 
 const images =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
@@ -18,12 +18,23 @@ const columnTwo = document.getElementById('column2')
 
 document.addEventListener('DOMContentLoaded', createStartScreen)
 
+function createWinScreen(){
+    document.getElementById('main-game').style.display='none'
+    const winScreen = document.getElementById('win-screen')
+    winScreen.style.display = "flex"
+    winScreen.style.backgroundImage = `url('../../Resources/SplashscreenWon.jpg')`
+}
+function createGameOverScreen(){
+    console.log('got here')
+    document.getElementById('main-game').style.display='none'
+    const gameoverScreen = document.getElementById('gameover-screen');
+    gameoverScreen.style.display = "flex"
+    gameoverScreen.style.backgroundImage = `url('../../Resources/SplashscreenGameOver.jpg')`
+}
 
 function createStartScreen(){
     const startscreenDiv = document.getElementById('start-screen');
     startscreenDiv.style.display = "flex"
-    startscreenDiv.style.height = "71vh"
-    startscreenDiv.style.width= "89vh"
     startscreenDiv.style.backgroundImage = `url('../../Resources/SplashscreenLoading.jpg')`
     //On click remove splash screen, add game board
     startscreenDiv.addEventListener('click', function () {
@@ -35,8 +46,6 @@ function createStartScreen(){
 function createMenu(){
     const menuDiv =document.getElementById('menu-game')
     menuDiv.style.display = "flex"
-    menuDiv.style.height = "71vh"
-    menuDiv.style.width= "89vh"
     menuDiv.style.backgroundImage=`url('../../Resources/SplashscreenMenu.jpg')`
     const startButton = document.getElementById('start-button')
     startButton.addEventListener('click', function () {
@@ -50,7 +59,10 @@ function createMenu(){
 //Create intial game/gameboard
 
 function createGameBoard() {
-    document.getElementById('main-game').style.display = "flex"
+    const mainDiv = document.getElementById('main-game')
+    mainDiv.style.display = "flex"
+    mainDiv.style.height = "99vh"
+    mainDiv.style.width= "98vh"
     const gameBoardDiv = document.getElementById('game-board')
     let shuffledImages = shuffleCards(images)
     let counter = 0
@@ -101,6 +113,9 @@ function toggleCard(cardDiv) {
                     selectedCards.forEach((card) => card.div.remove());
                     selectedCards = [];
                     score += 50;
+                    if (score >= 150) {
+                        createWinScreen();
+                    }
                     console.log(score)
                 }, 1000); 
             //Match not found
@@ -112,10 +127,14 @@ function toggleCard(cardDiv) {
                     selectedCards = [];
                 }, 1000); 
             }
+
             roundCounter++;
             console.log(roundCounter)
             if (++roundCounter % 3 === 0) {
                 addNewCards();
+            }
+            if (columnOne.childElementCount > 3 || columnTwo.childElementCount > 3) {
+                createGameOverScreen();
             }
         }
     }
@@ -134,6 +153,7 @@ function addNewCards() {
         } else {
             columnTwo.appendChild(cardDiv);
         }
+
     }
 }
 //Get random card to add (first from shuffled array)
