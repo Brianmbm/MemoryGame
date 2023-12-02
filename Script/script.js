@@ -9,6 +9,13 @@
 //TODO: Congratulations view
 //MUSTS: Animations, webcomponents, validation.pdf to verify CSS, Javascript and automated testing. Responsive (large screen and phone screen)
 
+const images =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
+let selectedCards =[]
+let score = 0
+let roundCounter = 0;
+const columnOne = document.getElementById('column1')
+const columnTwo = document.getElementById('column2')
+
 document.addEventListener('DOMContentLoaded', createStartScreen)
 
 
@@ -40,37 +47,33 @@ function createMenu(){
     quitButton.addEventListener('click', () => close())
 }
 
-
-//document.addEventListener('DOMContentLoaded', createGameBoard)
-const images =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
-let selectedCards =[]
-
 //Create intial game/gameboard
+
 function createGameBoard() {
     document.getElementById('main-game').style.display = "flex"
     const gameBoardDiv = document.getElementById('game-board')
     let shuffledImages = shuffleCards(images)
     let counter = 0
 
-//Create two columns for the game board
-    for (let i = 0; i < 2; i++) {
-        const columnDiv = document.createElement('div')
-        columnDiv.classList.add('column')
 
-//Create the cards in three rows
-    for (let j = 0; j < 3; j++) {
-        const cardDiv = document.createElement('div')
-        cardDiv.classList.add('card')
-        const imageName = shuffledImages[counter++];
-        cardDiv.style.backgroundImage = `url('../../Resources/cardBack.jpg')`
-        cardDiv.setAttribute('data-image', imageName);
-        cardDiv.addEventListener('click', () => toggleCard(cardDiv))
-        columnDiv.appendChild(cardDiv)
-    }
-    gameBoardDiv.appendChild(columnDiv);
+//Create two columns for the game board
+for (let j = 0; j < 6; j++) {
+    const cardDiv = document.createElement('div')
+    cardDiv.classList.add('card')
+    const imageName = shuffledImages[counter++];
+    cardDiv.style.backgroundImage = `url('../../Resources/cardBack.jpg')`
+    cardDiv.setAttribute('data-image', imageName);
+    cardDiv.addEventListener('click', () => toggleCard(cardDiv))
+
+    // Use an if statement to determine the column
+    if (j < 3) {
+        columnOne.appendChild(cardDiv);
+    } else {
+        columnTwo.appendChild(cardDiv);
     }
 }
 
+}
 //Shuffle the cards before putting them in column (Fishe-Yates Shuffle, answer from Stackoverflow)
 let shuffleCards = (array) => {
     let currentIndex = array.length, randomIndex;
@@ -97,6 +100,8 @@ function toggleCard(cardDiv) {
                 setTimeout(() => {
                     selectedCards.forEach((card) => card.div.remove());
                     selectedCards = [];
+                    score += 50;
+                    console.log(score)
                 }, 1000); 
             //Match not found
             } else {
@@ -107,6 +112,33 @@ function toggleCard(cardDiv) {
                     selectedCards = [];
                 }, 1000); 
             }
+            roundCounter++;
+            console.log(roundCounter)
+            if (++roundCounter % 3 === 0) {
+                addNewCards();
+            }
         }
     }
+}
+//add one card to each column after three attempts
+function addNewCards() {
+    for (let i = 0; i < 2; i++) {
+        const cardDiv = document.createElement('div');
+        cardDiv.classList.add('card');
+        const imageName = getCardImage();
+        cardDiv.style.backgroundImage = `url('../../Resources/cardBack.jpg')`;
+        cardDiv.setAttribute('data-image', imageName);
+        cardDiv.addEventListener('click', () => toggleCard(cardDiv));
+        if (i < 1) {
+            columnOne.appendChild(cardDiv);
+        } else {
+            columnTwo.appendChild(cardDiv);
+        }
+    }
+}
+//Get random card to add (first from shuffled array)
+function getCardImage(){
+    let shuffledImages = shuffleCards(images);
+    const imageName = shuffledImages[1];
+    return imageName;
 }
