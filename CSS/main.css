@@ -26,8 +26,8 @@ body{
 }
 .maintitle {
     font-size: 4vh;
-    margin: 2vh;
-    letter-spacing: 0.7vh;   
+    margin: 4vh;
+    letter-spacing: 0.7vh;
 }
 .gameboard {
     display: flex;
@@ -73,6 +73,7 @@ body{
     border-color: #2a2e31;
     border-width: 0.5vh;
     border-style:solid;
+    margin-top: 12vh;
 }       
 .menubutton{
     background-image: linear-gradient(to right, #555452 0%, #64696d  51%, #2a2e31  100%);

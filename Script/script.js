@@ -1,12 +1,14 @@
 
-//TODO: revert card to cardback after two clicks if cards not same
-//TODO: end game if no cards left or more than 3 rows of cards
+
 //TODO: Keep track of highscore
 //TODO: Rules guide view
 //TODO: About info view
 //TODO: Game over view
 //TODO: Congratulations view
+//TODO: Add bonuses at end of round
 //TODO: Add "sure you want to quit" dialogue
+//FIXME: can currently show more cards than 2 by clicking fast
+//Question: Should the round count reset if pair found?
 //MUSTS: Animations, webcomponents, validation.pdf to verify CSS, Javascript and automated testing. Responsive (large screen and phone screen)
 
 const images =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
@@ -15,45 +17,53 @@ let score = 0
 let roundCounter = 0;
 const columnOne = document.getElementById('column1')
 const columnTwo = document.getElementById('column2')
+const menuScreen = document.getElementById('menu-game')
 
 document.addEventListener('DOMContentLoaded', createStartScreen)
 
-function createWinScreen(){
-    document.getElementById('main-game').style.display='none'
-    const winScreen = document.getElementById('win-screen')
-    winScreen.style.display = "flex"
-    winScreen.style.backgroundImage = `url('../../Resources/SplashscreenWon.jpg')`
-}
-function createGameOverScreen(){
-    console.log('got here')
-    document.getElementById('main-game').style.display='none'
-    const gameoverScreen = document.getElementById('gameover-screen');
-    gameoverScreen.style.display = "flex"
-    gameoverScreen.style.backgroundImage = `url('../../Resources/SplashscreenGameOver.jpg')`
-}
-
-function createStartScreen(){
-    const startscreenDiv = document.getElementById('start-screen');
-    startscreenDiv.style.display = "flex"
-    startscreenDiv.style.backgroundImage = `url('../../Resources/SplashscreenLoading.jpg')`
-    //On click remove splash screen, add game board
-    startscreenDiv.addEventListener('click', function () {
-        startscreenDiv.style.display = "none"
-        createMenu()
-    })
-    }
 
 function createMenu(){
-    const menuDiv =document.getElementById('menu-game')
-    menuDiv.style.display = "flex"
-    menuDiv.style.backgroundImage=`url('../../Resources/SplashscreenMenu.jpg')`
+    menuScreen.style.display = "flex"
+    menuScreen.style.backgroundImage=`url('../../Resources/SplashscreenMenu.jpg')`
+    menuScreen.style.justifyContent="start"
     const startButton = document.getElementById('start-button')
     startButton.addEventListener('click', function () {
-        menuDiv.style.display = "none"
+        menuScreen.style.display = "none"
         createGameBoard()
+    })
+    const guideButton = document.getElementById('guide-button')
+    guideButton.addEventListener('click', function () {
+        createGuideScreen()
+    })
+    const aboutButton = document.getElementById('about-button')
+    aboutButton.addEventListener('click', function () {
+        createAboutScreen()
+    })
+    const highscoreButton = document.getElementById('highscore-button')
+    highscoreButton.addEventListener('click', function () {
+        createHighScoreScreen()
     })
     const quitButton = document.getElementById('quit-button')
     quitButton.addEventListener('click', () => close())
+}
+function createGuideScreen(){
+    menuScreen.style.display='none'
+    const guideScreen = document.getElementById('guide-screen')
+    guideScreen.style.display = "flex"
+    guideScreen.style.backgroundImage = `url('../../Resources/SplashscreenGuide.jpg')`
+}
+function createAboutScreen(){
+    menuScreen.style.display='none'
+    const aboutScreen = document.getElementById('about-screen')
+    aboutScreen.style.display = "flex"
+    aboutScreen.style.backgroundImage = `url('../../Resources/SplashscreenAbout.jpg')`
+}
+
+function createHighScoreScreen(){
+    menuScreen.style.display='none'
+    const highScreen = document.getElementById('highscore-screen')
+    highScreen.style.display = "flex"
+    highScreen.style.backgroundImage = `url('../../Resources/SplashscreenHigh.jpg')`
 }
 
 //Create intial game/gameboard
@@ -153,7 +163,6 @@ function addNewCards() {
         } else {
             columnTwo.appendChild(cardDiv);
         }
-
     }
 }
 //Get random card to add (first from shuffled array)
@@ -161,4 +170,29 @@ function getCardImage(){
     let shuffledImages = shuffleCards(images);
     const imageName = shuffledImages[1];
     return imageName;
+}
+
+function createWinScreen(){
+    document.getElementById('main-game').style.display='none'
+    const winScreen = document.getElementById('win-screen')
+    winScreen.style.display = "flex"
+    winScreen.style.backgroundImage = `url('../../Resources/SplashscreenWon.jpg')`
+}
+
+function createGameOverScreen(){
+    document.getElementById('main-game').style.display='none'
+    const gameoverScreen = document.getElementById('gameover-screen');
+    gameoverScreen.style.display = "flex"
+    gameoverScreen.style.backgroundImage = `url('../../Resources/SplashscreenGameOver.jpg')`
+}
+
+function createStartScreen(){
+    const startscreenDiv = document.getElementById('start-screen');
+    startscreenDiv.style.display = "flex"
+    startscreenDiv.style.backgroundImage = `url('../../Resources/SplashscreenLoading.jpg')`
+    //On click remove splash screen, add game board
+    startscreenDiv.addEventListener('click', function () {
+        startscreenDiv.style.display = "none"
+        createMenu()
+    })
 }
