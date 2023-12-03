@@ -14,7 +14,7 @@
         <h1 class="maintitle">
             MEMOFUDA
         </h1>
-        <div>
+        <div id="menu-rect" class="defaultrect">
             <button id="start-button" class="menubutton">Start Game</button>
             <button id="highscore-button" class="menubutton">High Scores</button>
             <button id="guide-button" class="menubutton">Guide</button>
@@ -23,6 +23,15 @@
         </div>
     </div>
     <div id="highscore-screen" class="defaultscreen"></div>
+    <div id="level-screen" class="defaultscreen">
+        
+        <div id="menu-rect" class="defaultrect">
+            <h2>Pick a level</h2>
+            <button id="levelzero-button" class="menubutton">Level Zero</button>
+            <button id="levelone-button" class="menubutton">Level One</button>
+            <button id="leveltwo-button" class="menubutton">Level Two</button>
+        </div>
+    </div>
     <div id="main-game" class="defaultscreen">
         <div>
             <h1 class="maintitle">
@@ -32,12 +41,39 @@
         <div id="game-board" class="gameboard">
         <div id="column1" class="column"></div>
         <div id="column2" class="column"></div>
+        <div id="column3" class="column"></div>
+        <div id="column4" class="column"></div>
         </div>
     </div>
     <div id="win-screen" class="defaultscreen"></div>
     <div id="gameover-screen" class="defaultscreen"></div>
-    <div id="guide-screen" class="defaultscreen"></div>
-    <div id="about-screen" class="defaultscreen"></div>
+    <div id="guide-screen" class="defaultscreen">
+        <div id="guide-rect" class="defaultrect">
+            <h2>Game Play Rules:</h2>
+            <p>1. Match 2 cards to earn 50 points, and the matched cards disappear.</p>
+            <p>2. After the 3rd turn (2 card picks, counts as one turn), one new card for each column drop down.</p>
+            <p>3. Game over occurs when any column has 4 cards high.</p>
+            <p>4. Complete the game when you reach 150 points for level zero, 250 for level one, or 350 for level two.</p>
+            <h2>Game Over:</h2>
+            <p>Game over for any case where one column has 4 cards high.</p>
+            <h2>Completed Game:</h2>
+            <p>Complete the game as soon as you reach the required score</p>
+            <h2>Bonus Points:</h2>
+            <p>For every empty row on height 3: 50 points for every empty row in each column.</p>
+            <p>For every empty row on height 2: 100 points for every empty row in each column.</p>
+            <p>For every empty row on height 1: 150 points for every empty row in each column.</p>
+        </div>
+        <button id="guide-back-button" class="menubutton">Back to Menu</button>
+    </div>
+    <div id="about-screen" class="defaultscreen">
+        <div id="about-rect" class="defaultrect">
+            <h2>About MEMOFUDA</h2>
+            <p>Memofuda is a Memory game with art inspired by japanese Hanafuda card games and japanese wood-art known as Ukiyo-e.</p>
+            <p>The game art was made with the AI Image Generator, Midjourney.</p>
+            <p>The game was created as a short Javascript-course project by Brian Bocquet</p>
+        </div>
+        <button id="about-back-button" class="menubutton">Back to Menu</button>
+    </div>
 
     <script src="Script/script.js"></script>
 </body>

@@ -44,7 +44,7 @@ body{
 }
 
 .column {
-    display: flex;
+    display: none;
     flex-direction: column-reverse;
     width: 17vh;
     height: fit-content;
@@ -63,17 +63,17 @@ body{
     cursor: pointer;
     margin: 1vh;
 }
-#menu-game > div {
+.defaultrect {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
     background-color: #f2cba0;
     padding: 2vh;
     border-radius: 0.5vh;
     border-color: #2a2e31;
     border-width: 0.5vh;
     border-style:solid;
-    margin-top: 12vh;
 }       
 .menubutton{
     background-image: linear-gradient(to right, #555452 0%, #64696d  51%, #2a2e31  100%);
