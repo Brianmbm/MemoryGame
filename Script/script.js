@@ -1,13 +1,15 @@
-//TODO: Game over view, add button to back to menu
-//FIXME: Fix the check score in togglecard to respond to level requirements
-//TODO: On win screen, add button to save highscore and button to go back to menu
-//TODO: Add bonuses at end of round, show them in win screen
-//TODO: Add click to continue dialogue in startscreen
-//TODO: Add "sure you want to quit" dialogue
-//FIXME: can currently show more cards than 2 by clicking fast
-//FIXME: Background image responsive but not in a good way.
-//FIXME: Need time pause after last selection before game won/game over screen
-//MUSTS: Animations, webcomponents, validation.pdf to verify CSS, Javascript and automated testing. Responsive (large screen and phone screen)
+//TODO Prio Med: Game over view, add button to back to menu
+//TODO Prio Med: On win screen, add button to save highscore and button to go back to menu
+//TODO Prio High: Add bonuses at end of round, show them in win screen
+//TODO Prio Low: Add click to continue dialogue in startscreen
+//TODO Prio Low: Add "sure you want to quit" dialogue
+//TODO Prio High: Use webcomponents
+//TODO Prio High: Use animations
+//TODO Prio High: Use validation PDF (verify Css, javascript, automated testing)
+//TODO Prio High: Responsive to large screen and mobile
+//FIXME Prio Low: can currently show more cards than 2 by clicking fast
+//FIXME Prio Low: Background image responsive but not in a good way.
+//FIXME Prio Low: Need time pause after last selection before game won/game over screen
 
 const imagesLevelZero =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
 const imagesLevelOne =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg']
@@ -121,8 +123,20 @@ function toggleCard(cardDiv, level) {
                     selectedCards.forEach((card) => card.div.remove());
                     selectedCards = [];
                     score += 50;
-                    if (score >= 150) {
-                        createWinScreen();
+                    if(level === 0){
+                        if (score >= 150) {
+                            createWinScreen();
+                        }
+                    }
+                    if(level === 1){
+                        if (score >= 250) {
+                            createWinScreen();
+                        }
+                    }
+                    if(level === 2){
+                        if (score >= 350) {
+                            createWinScreen();
+                        }
                     }
                     console.log(score)
                 }, 1000); 
