@@ -1,7 +1,8 @@
-//TODO: Add level one and two code
 //TODO: Game over view, add button to back to menu
+//FIXME: Fix the check score in togglecard to respond to level requirements
 //TODO: On win screen, add button to save highscore and button to go back to menu
 //TODO: Add bonuses at end of round, show them in win screen
+//TODO: Add click to continue dialogue in startscreen
 //TODO: Add "sure you want to quit" dialogue
 //FIXME: can currently show more cards than 2 by clicking fast
 //FIXME: Background image responsive but not in a good way.
@@ -9,18 +10,20 @@
 //MUSTS: Animations, webcomponents, validation.pdf to verify CSS, Javascript and automated testing. Responsive (large screen and phone screen)
 
 const imagesLevelZero =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
-const imagesLevelOne =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg']
-const imagesLevelTwo =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg']
+const imagesLevelOne =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg']
+const imagesLevelTwo =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg', 'card_6.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg', 'card_6.jpg']
 let selectedCards =[]
 let score = 0
 let roundCounter = 0;
+
+const imagesByLevel = [imagesLevelZero, imagesLevelOne, imagesLevelTwo];
 const columnOne = document.getElementById('column1')
 const columnTwo = document.getElementById('column2')
 const columnThree = document.getElementById('column3')
 const columnFour = document.getElementById('column4')
 const menuScreen = document.getElementById('menu-game')
 const levelScreen = document.getElementById('level-screen')
-
+const columns = [columnOne, columnTwo, columnThree, columnFour];
 document.addEventListener('DOMContentLoaded', createStartScreen)
 
 function createStartScreen(){
@@ -56,39 +59,39 @@ function createLevelScreen(){
     levelScreen.style.display = "flex"
     levelScreen.style.backgroundImage = `url('../../Resources/Levelscreen.jpg')`
     const levelZeroButton = document.getElementById('levelzero-button')
-    levelZeroButton.addEventListener('click', () => createGameBoard())
+    levelZeroButton.addEventListener('click', () => createGameBoard(0))
+    const levelOneButton = document.getElementById('levelone-button')
+    levelOneButton.addEventListener('click', () => createGameBoard(1))
+    const levelTwoButton = document.getElementById('leveltwo-button')
+    levelTwoButton.addEventListener('click', () => createGameBoard(2))
 }
 
 //Create intial game/gameboard
-function createGameBoard() {
+function createGameBoard(level) {
     levelScreen.style.display = "none"
     const mainDiv = document.getElementById('main-game')
     mainDiv.style.display = "flex"
     mainDiv.style.height="98vh"
     mainDiv.style.width="95vw"
-    const gameBoardDiv = document.getElementById('game-board')
-    let shuffledImages = shuffleCards(imagesLevelZero)
+    let shuffledImages = shuffleCards(imagesByLevel[level]);
     let counter = 0
-    columnOne.style.display = "flex"
-    columnTwo.style.display = "flex"
-
-
-//Create two columns for the game board
-for (let j = 0; j < 6; j++) {
-    const cardDiv = document.createElement('div')
-    cardDiv.classList.add('card')
-    const imageName = shuffledImages[counter++];
-    cardDiv.style.backgroundImage = `url('../../Resources/cardBack.jpg')`
-    cardDiv.setAttribute('data-image', imageName);
-    cardDiv.addEventListener('click', () => toggleCard(cardDiv))
-
-    // Use an if statement to determine the column
-    if (j < 3) {
-        columnOne.appendChild(cardDiv);
-    } else {
-        columnTwo.appendChild(cardDiv);
+    //Clear columns from previous games
+    for (let i = 0; i < columns.length; i++) {
+            columns[i].innerHTML = "";
     }
-}
+    const numColumns = level + 2
+    for (let i = 0; i < numColumns; i++) {
+        columns[i].style.display = "flex";
+        for (let j = 0; j < 3; j++) {
+            const cardDiv = document.createElement('div');
+            cardDiv.classList.add('card');
+            const imageName = shuffledImages[counter++];
+            cardDiv.style.backgroundImage = `url('../../Resources/cardBack.jpg')`;
+            cardDiv.setAttribute('data-image', imageName);
+            cardDiv.addEventListener('click', () => toggleCard(cardDiv, level));
+            columns[i].appendChild(cardDiv);
+        }
+    }
 
 }
 //Shuffle the cards before putting them in column (Fishe-Yates Shuffle, answer from Stackoverflow)
@@ -103,7 +106,7 @@ let shuffleCards = (array) => {
     return array
 }
 //Show cards when clicked
-function toggleCard(cardDiv) {
+function toggleCard(cardDiv, level) {
     const isCardBack = cardDiv.style.backgroundImage.includes('cardBack')
     const imageName = cardDiv.getAttribute('data-image')
 
@@ -132,38 +135,40 @@ function toggleCard(cardDiv) {
                     selectedCards = [];
                 }, 1000); 
             }
-
             roundCounter++;
             console.log(roundCounter)
             if (++roundCounter % 3 === 0) {
-                addNewCards();
+                addNewCards(level);
             }
-            if (columnOne.childElementCount > 3 || columnTwo.childElementCount > 3) {
-                createGameOverScreen();
+            const numColumns = level + 2
+            for (let i = 0; i < numColumns; i++) {
+                if (columns[i].childElementCount > 3) {
+                    createGameOverScreen();
+                    return; 
+                }
             }
         }
     }
 }
-//add one card to each column after three attempts
-function addNewCards() {
-    for (let i = 0; i < 2; i++) {
-        const cardDiv = document.createElement('div');
-        cardDiv.classList.add('card');
-        const imageName = getCardImage();
-        cardDiv.style.backgroundImage = `url('../../Resources/cardBack.jpg')`;
-        cardDiv.setAttribute('data-image', imageName);
-        cardDiv.addEventListener('click', () => toggleCard(cardDiv));
-        if (i < 1) {
-            columnOne.appendChild(cardDiv);
-        } else {
-            columnTwo.appendChild(cardDiv);
+//Add one card to each column after three attempts
+function addNewCards(level) {
+    const numColumns = level + 2
+    for (let i = 0; i < numColumns; i++) {
+        for (let j = 0; j < 1; j++) {
+            const cardDiv = document.createElement('div');
+            cardDiv.classList.add('card');
+            const imageName = getCardImage(level);
+            cardDiv.style.backgroundImage = `url('../../Resources/cardBack.jpg')`;
+            cardDiv.setAttribute('data-image', imageName);
+            cardDiv.addEventListener('click', () => toggleCard(cardDiv));
+            columns[i].appendChild(cardDiv);
         }
     }
 }
 //Get random card to add (first from shuffled array)
-function getCardImage(){
-    let shuffledImages = shuffleCards(imagesLevelZero);
-    const imageName = shuffledImages[1];
+function getCardImage(level){
+    let shuffledImages = shuffleCards(imagesByLevel[level]);
+    const imageName = shuffledImages[0];
     return imageName;
 }
 function createWinScreen(){

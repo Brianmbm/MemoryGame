@@ -31,11 +31,10 @@ body{
 }
 .gameboard {
     display: flex;
-    width:fit-content;
     border-radius: 1vh;
     padding: 2vh;
     height:75vh;
-    width: 40vh;
+    width: fit-content;
     gap: 1vh;
     justify-content: center;
     background-color: #5e8187;
