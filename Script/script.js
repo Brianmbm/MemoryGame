@@ -1,15 +1,17 @@
 //TODO Prio Med: Game over view, add button to back to menu
 //TODO Prio Med: On win screen, add button to save highscore and button to go back to menu
+//TODO Prio Med: Show score during game
 //TODO Prio High: Add bonuses at end of round, show them in win screen
 //TODO Prio Low: Add click to continue dialogue in startscreen
 //TODO Prio Low: Add "sure you want to quit" dialogue
 //TODO Prio High: Use webcomponents
-//TODO Prio High: Use animations
+//TODO Prio Med: Animations when switching views (maybe use opacitity, example in https://stackoverflow.com/questions/74831681/how-to-make-a-image-appear-and-disappear-through-simple-animation )
 //TODO Prio High: Use validation PDF (verify Css, javascript, automated testing)
 //TODO Prio High: Responsive to large screen and mobile
 //FIXME Prio Low: can currently show more cards than 2 by clicking fast
 //FIXME Prio Low: Background image responsive but not in a good way.
 //FIXME Prio Low: Need time pause after last selection before game won/game over screen
+//Question: Shouldnt the cards be shown at start of round?
 
 const imagesLevelZero =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
 const imagesLevelOne =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg']
@@ -43,7 +45,14 @@ function createMenu(){
     menuScreen.style.display = "flex"
     menuScreen.style.backgroundImage=`url('../../Resources/SplashscreenMenu.jpg')`
     menuScreen.style.justifyContent="start"
-    document.getElementById('menu-rect').style.marginTop="10vh"
+    document.getElementById('menu-rect').style.marginTop="6vh"
+    anime({
+        targets: '#turning-circle',
+        rotate: '-360deg', // Rotate 360 degrees
+        duration: 2000,   // Animation duration in milliseconds
+        easing: 'linear', // Easing function (linear for a constant speed)
+        loop: true        // Loop the animation
+      });
     const startButton = document.getElementById('start-button')
     startButton.addEventListener('click', () => createLevelScreen())
     const guideButton = document.getElementById('guide-button')

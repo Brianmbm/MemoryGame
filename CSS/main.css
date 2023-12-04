@@ -94,4 +94,15 @@ body{
     background-position: right center; 
     color: #fff;
   }
+  #circle-container {
+    width: 10vh;
+    height: 10vh;
+    position: relative;
+    }
+
+    #turning-circle {
+    width: 10vh;
+    height: 10vh;
+    object-fit: cover;
+    }
  
