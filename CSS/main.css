@@ -12,8 +12,9 @@ body{
     background-color: #fbeace;
     background-size:cover;
     background-position:center;
-    width:89vh;
-    height: 71vh;
+    width:95vh;
+    height: 85vh;
+    max-width: 100%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -94,6 +95,7 @@ body{
     background-position: right center; 
     color: #fff;
   }
+
   #circle-container {
     width: 10vh;
     height: 10vh;
