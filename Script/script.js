@@ -1,6 +1,5 @@
 //TODO Prio Med: On win screen, add button to save highscore
 //TODO Prio Med: Show score during game
-//TODO Prio Med: Image optimization
 //TODO Prio High: Add bonuses at end of round, show them in win screen
 //TODO Prio Low: Add click to continue dialogue in startscreen
 //TODO Prio Low: Add "sure you want to quit" dialogue
@@ -9,7 +8,6 @@
 //TODO Prio High: Use validation PDF (verify Css, javascript, automated testing)
 //FIXME Prio Low: can currently show more cards than 2 by clicking fast
 //FIXME Prio Low: Need time pause after last selection before game won/game over screen
-//FIXME Prio Med: If match found on last round, game over instead of won, seems to  add cards and count the columns before it removes the cards??
 
 const imagesLevelZero =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
 const imagesLevelOne =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg']
@@ -63,7 +61,7 @@ function createMenu(){
 function createLevelScreen(){
     menuScreen.style.display='none'
     levelScreen.style.display = "flex"
-    levelScreen.style.backgroundImage = `${getImageFolderPath()}Levelscreen.jpg')`
+    levelScreen.style.backgroundImage = `url('${getImageFolderPath()}Levelscreen.jpg')`
     const levelZeroButton = document.getElementById('levelzero-button')
     levelZeroButton.addEventListener('click', () => createGameBoard(0))
     const levelOneButton = document.getElementById('levelone-button')
@@ -117,11 +115,8 @@ function toggleCard(cardDiv, level) {
         selectedCards.push({ div: cardDiv, name: imageName });
 
         if (selectedCards.length === 2) {
-
             if (selectedCards[0].name === selectedCards[1].name) {
                 setTimeout(() => {
-                    selectedCards.forEach((card) => card.div.remove())
-                    selectedCards = [];
                     score += 50;
                     if(level === 0){
                         if (score >= 150) {
@@ -133,7 +128,9 @@ function toggleCard(cardDiv, level) {
                         if (score >= 350) {
                             createWinScreen()}}
                     console.log(score)
-                }, 1000)} 
+                }, 1000)
+                setTimeout(() => {selectedCards.forEach((card) => card.div.remove())
+                selectedCards = [];}, 500)} 
 
             else {setTimeout(() => {
                     selectedCards.forEach((card) => {
@@ -143,6 +140,7 @@ function toggleCard(cardDiv, level) {
                 }, 1000);}
 
             roundCounter++
+            setTimeout(() => {
             if (level === 0 && roundCounter % 3 === 0) {
                 if (score < 150) {
                     addNewCards(level);}} 
@@ -157,7 +155,12 @@ function toggleCard(cardDiv, level) {
             for (let i = 0; i < numColumns; i++) {
                 if (columns[i].childElementCount > 3) {
                     setTimeout(()=>{createGameOverScreen()}, 1000)
-                    return; }}}}}
+                    return; 
+                }
+            }},1000)
+        }
+    }
+}
 
 //Add one card to each column after three attempts
 function addNewCards(level) {
@@ -182,13 +185,14 @@ function createWinScreen(){
     document.getElementById('main-game').style.display='none'
     const winScreen = document.getElementById('win-screen')
     winScreen.style.display = "flex"
-    winScreen.style.backgroundImage = `${getImageFolderPath()}SplashscreenWon.jpg')`
+    winScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenWon.jpg')`
     winScreen.style.justifyContent = "end"
     winbackButton = document.getElementById('winback-button')
     winbackButton.style.alignSelf = "end"
     winbackButton.style.margin = "2vh"
-    winbackButton.addEventListener('click', function () {
+    winbackButton.addEventListener('click', ()=>  {
         score = 0
+        roundCounter=0
         winScreen.style.display = 'none'
         menuScreen.style.display = "flex"})}
 
@@ -196,13 +200,14 @@ function createGameOverScreen(){
     document.getElementById('main-game').style.display='none'
     const gameoverScreen = document.getElementById('gameover-screen')
     gameoverScreen.style.display = "flex"
-    gameoverScreen.style.backgroundImage = `${getImageFolderPath()}SplashscreenGameOver.jpg')`
+    gameoverScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenGameOver.jpg')`
     gameoverScreen.style.justifyContent = "start"
     losebackButton = document.getElementById('loseback-button')
     losebackButton.style.alignSelf = "start"
     losebackButton.style.margin = "2vh"
-    losebackButton.addEventListener('click', function () {
+    losebackButton.addEventListener('click', ()=>  {
         score = 0
+        roundCounter=0
         gameoverScreen.style.display = 'none'
         menuScreen.style.display = "flex"})}
 
@@ -210,7 +215,7 @@ function createGuideScreen(){
     menuScreen.style.display='none'
     const guideScreen = document.getElementById('guide-screen')
     guideScreen.style.display = "flex"
-    guideScreen.style.backgroundImage = `${getImageFolderPath()}SplashscreenGuide.jpg')`
+    guideScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenGuide.jpg')`
     document.getElementById('guide-back-button').addEventListener('click', function () {
         guideScreen.style.display = 'none'
         menuScreen.style.display = "flex" })}
@@ -219,7 +224,7 @@ function createAboutScreen(){
     menuScreen.style.display='none'
     const aboutScreen = document.getElementById('about-screen')
     aboutScreen.style.display = "flex"
-    aboutScreen.style.backgroundImage = `${getImageFolderPath()}SplashscreenAbout.jpg')`
+    aboutScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenAbout.jpg')`
     document.getElementById('about-back-button').addEventListener('click', function () {
         aboutScreen.style.display = 'none'
         menuScreen.style.display = "flex"})}
@@ -228,7 +233,7 @@ function createHighScoreScreen(){
     menuScreen.style.display='none'
     const highScreen = document.getElementById('highscore-screen')
     highScreen.style.display = "flex"
-    highScreen.style.backgroundImage = `${getImageFolderPath()}SplashscreenHigh.jpg')`}
+    highScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenHigh.jpg')`}
 
 function getImageFolderPath() {
     return window.innerWidth < 480 ? '../../Resources/Small/' : '../../Resources/';
