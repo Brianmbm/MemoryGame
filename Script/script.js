@@ -8,6 +8,7 @@
 //TODO Prio High: Use validation PDF (verify Css, javascript, automated testing)
 //FIXME Prio Low: can currently show more cards than 2 by clicking fast
 //FIXME Prio Low: Need time pause after last selection before game won/game over screen
+//FIXME Prio Low: Occasionaly the game stops adding cards. roundCounter and addcard function seem to work. Unclear why.
 
 const imagesLevelZero =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
 const imagesLevelOne =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg']
@@ -36,6 +37,7 @@ function createStartScreen(){
         createMenu()})}
 
 function createMenu(){
+    console.log(score)
     menuScreen.style.display = "flex"
     menuScreen.style.backgroundImage=`url('${getImageFolderPath()}SplashscreenMenu.jpg')`
     menuScreen.style.justifyContent="start"
@@ -121,7 +123,6 @@ function toggleCard(cardDiv, level) {
                     if(level === 0){
                         if (score >= 150) {
                             score+=calculateBonus()
-                            console.log(score)
                             createWinScreen()}}
                     else if(level === 1){
                         if (score >= 250) {
@@ -131,7 +132,6 @@ function toggleCard(cardDiv, level) {
                         if (score >= 350) {
                             score+=calculateBonus()
                             createWinScreen()}}
-                    console.log(score)
                 }, 1000)
                 setTimeout(() => {selectedCards.forEach((card) => card.div.remove())
                 selectedCards = [];}, 500)} 
@@ -139,12 +139,12 @@ function toggleCard(cardDiv, level) {
             else {setTimeout(() => {
                     selectedCards.forEach((card) => {
                         card.div.style.backgroundImage = `url('${getImageFolderPath()}cardBack.jpg')`});
-                    selectedCards = [];
-                
-                }, 1000);}
+                    selectedCards = [];}, 1000);}
+
 
             roundCounter++
             setTimeout(() => {
+                console.log(roundCounter)
             if (level === 0 && roundCounter % 3 === 0) {
                 if (score < 150) {
                     addNewCards(level);}} 
@@ -177,7 +177,8 @@ function addNewCards(level) {
             cardDiv.style.backgroundImage = `url('${getImageFolderPath()}cardBack.jpg')`
             cardDiv.setAttribute('data-image', imageName);
             cardDiv.addEventListener('click', () => toggleCard(cardDiv))
-            columns[i].appendChild(cardDiv);}}}
+            columns[i].appendChild(cardDiv)
+            console.log("made it here");}}}
 
 //Get random card to add (first from shuffled array)
 function getCardImage(level){
@@ -190,9 +191,10 @@ function createWinScreen(){
     const winScreen = document.getElementById('win-screen')
     winScreen.style.display = "flex"
     winScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenWon.jpg')`
-    winScreen.style.justifyContent = "end"
+
+    document.getElementById("win-score").textContent=`Final score: ${score}`
     winbackButton = document.getElementById('winback-button')
-    winbackButton.style.alignSelf = "end"
+
     winbackButton.style.margin = "2vh"
     winbackButton.addEventListener('click', ()=>  {
         score = 0
@@ -237,7 +239,10 @@ function createHighScoreScreen(){
     menuScreen.style.display='none'
     const highScreen = document.getElementById('highscore-screen')
     highScreen.style.display = "flex"
-    highScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenHigh.jpg')`}
+    highScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenHigh.jpg')`
+    document.getElementById('highscoreback-button').addEventListener('click', function () {
+        highScreen.style.display = 'none'
+        menuScreen.style.display = "flex"})}
 
 function getImageFolderPath() {
     return window.innerWidth < 480 ? '../../Resources/Small/' : '../../Resources/';

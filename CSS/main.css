@@ -80,8 +80,9 @@ body{
     background-image: linear-gradient(to right, #555452 0%, #64696d  51%, #2a2e31  100%);
     margin: 0.7vh;
     padding: 1vh 3vw;
-    text-align: center;
+
     text-transform: uppercase;
+    text-wrap: nowrap;
     font-size: 1.2vh;
     font-weight: bold;
     letter-spacing: 0.2vh;
