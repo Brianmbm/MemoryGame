@@ -120,12 +120,16 @@ function toggleCard(cardDiv, level) {
                     score += 50;
                     if(level === 0){
                         if (score >= 150) {
+                            score+=calculateBonus()
+                            console.log(score)
                             createWinScreen()}}
                     else if(level === 1){
                         if (score >= 250) {
+                            score+=calculateBonus()
                             createWinScreen()}}
                     else if(level === 2){
                         if (score >= 350) {
+                            score+=calculateBonus()
                             createWinScreen()}}
                     console.log(score)
                 }, 1000)
@@ -238,4 +242,20 @@ function createHighScoreScreen(){
 function getImageFolderPath() {
     return window.innerWidth < 480 ? '../../Resources/Small/' : '../../Resources/';
 }
-    
+function calculateBonus() {
+    let bonus = 0
+    const numColumns = columns.length
+
+    for (let i = 0; i < numColumns; i++) {
+        const columnHeight = columns[i].childElementCount
+        if (columnHeight === 0) {
+            bonus += 150; 
+        } else if (columnHeight === 1) {
+            bonus += 100; 
+        } else if (columnHeight === 2) {
+            bonus += 50; 
+        }
+    }
+
+    return bonus;
+}   
