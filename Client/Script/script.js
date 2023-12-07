@@ -3,8 +3,9 @@
 //TODO Prio High: Use webcomponents
 //TODO Prio Med: Animations when switching views (maybe use opacitity, example in https://stackoverflow.com/questions/74831681/how-to-make-a-image-appear-and-disappear-through-simple-animation )
 //TODO Prio High: Use validation PDF (verify Css, javascript, automated testing)
-//FIXME Prio Low: can currently show more cards than 2 by clicking fast
-//FIXME Prio Med: The game stops adding cards. Addnewcards is being called only once then stops 
+//FIXME Prio Low: can currently show more cards than 2 by clicking fast, can also click on card in the settimeout before gameover.
+//TODO Prio Low: Fix highscore screen styling (fonts etc) 
+//TODO Prio Low: Change aboutscreen so it uses constructor and shadowroot and not callback (find out how to take style from main CSS sheet)
 //INFO: Do not run live server from main Memory game folder in VS as it reloads page when writing to server files. Run from Client folder.
 const imagesLevelZero =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
 const imagesLevelOne =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg']
@@ -13,6 +14,7 @@ const imagesLevelTwo =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', '
 let selectedCards =[]
 let score = 0
 let roundCounter = 0;
+let level = 0
 
 const imagesByLevel = [imagesLevelZero, imagesLevelOne, imagesLevelTwo];
 const columnOne = document.getElementById('column1')
@@ -33,7 +35,6 @@ function createStartScreen(){
         createMenu()})}
 
 function createMenu(){
-    console.log(score)
     menuScreen.style.display = "flex"
     menuScreen.style.backgroundImage=`url('${getImageFolderPath()}SplashscreenMenu.jpg')`
     menuScreen.style.justifyContent="start"
@@ -49,8 +50,10 @@ function createMenu(){
     startButton.addEventListener('click', () => createLevelScreen())
     const guideButton = document.getElementById('guide-button')
     guideButton.addEventListener('click', () => createGuideScreen())
-    const aboutButton = document.getElementById('about-button')
-    aboutButton.addEventListener('click', () => createAboutScreen())
+    const aboutButton = document.getElementById('about-button');
+    aboutButton.addEventListener('click', () => {
+        menuScreen.style.display = 'none'
+        document.querySelector('about-screen').style.display = 'flex'})
     const highscoreButton = document.getElementById('highscore-button')
     highscoreButton.addEventListener('click', () => createHighScoreScreen())
     const quitButton = document.getElementById('quit-button')
@@ -61,14 +64,20 @@ function createLevelScreen(){
     levelScreen.style.display = "flex"
     levelScreen.style.backgroundImage = `url('${getImageFolderPath()}Levelscreen.jpg')`
     const levelZeroButton = document.getElementById('levelzero-button')
-    levelZeroButton.addEventListener('click', () => createGameBoard(0))
+    levelZeroButton.addEventListener('click', () => {
+    level = 0
+    createGameBoard()})
     const levelOneButton = document.getElementById('levelone-button')
-    levelOneButton.addEventListener('click', () => createGameBoard(1))
+    levelOneButton.addEventListener('click', () => {
+    level = 1
+    createGameBoard()})
     const levelTwoButton = document.getElementById('leveltwo-button')
-    levelTwoButton.addEventListener('click', () => createGameBoard(2))}
+    levelTwoButton.addEventListener('click', () => {
+        level = 2
+        createGameBoard()})}
 
 
-function createGameBoard(level) {
+function createGameBoard() {
     levelScreen.style.display = "none"
     const mainDiv = document.getElementById('main-game')
     mainDiv.style.display = "flex"
@@ -102,7 +111,7 @@ let shuffleCards = (array) => {
     } return array}
 
 
-function toggleCard(cardDiv, level) {
+function toggleCard(cardDiv) {
     const isCardBack = cardDiv.style.backgroundImage.includes('cardBack')
     const imageName = cardDiv.getAttribute('data-image')
 
@@ -114,18 +123,15 @@ function toggleCard(cardDiv, level) {
             if (selectedCards[0].name === selectedCards[1].name) {
                 setTimeout(() => {
                     score += 50;
-                    if(level === 0){
-                        if (score >= 150) {
+                    if(level === 0 && score >= 150){
                             score+=calculateBonus()
-                            createWinScreen()}}
-                    else if(level === 1){
-                        if (score >= 250) {
+                            createWinScreen()}
+                    else if(level === 1 && score >= 250){
                             score+=calculateBonus()
-                            createWinScreen()}}
-                    else if(level === 2){
-                        if (score >= 350) {
+                            createWinScreen()}
+                    else if(level === 2 && score >= 350) {
                             score+=calculateBonus()
-                            createWinScreen()}}
+                            createWinScreen()}
                 }, 1000)
                 setTimeout(() => {selectedCards.forEach((card) => card.div.remove())
                 selectedCards = [];}, 500)} 
@@ -138,7 +144,6 @@ function toggleCard(cardDiv, level) {
 
             roundCounter++
             setTimeout(() => {
-                console.log(roundCounter)
             if (level === 0 && roundCounter % 3 === 0) {
                 if (score < 150) {
                     roundCounter=0
@@ -164,8 +169,7 @@ function toggleCard(cardDiv, level) {
 }
 
 //Add one card to each column after three attempts
-function addNewCards(level) {
-    console.log("called me")
+function addNewCards() {
     const numColumns = level + 2
     for (let i = 0; i < numColumns; i++) {
         for (let j = 0; j < 1; j++) {
@@ -175,11 +179,10 @@ function addNewCards(level) {
             cardDiv.style.backgroundImage = `url('${getImageFolderPath()}cardBack.jpg')`
             cardDiv.setAttribute('data-image', imageName);
             cardDiv.addEventListener('click', () => toggleCard(cardDiv))
-            columns[i].appendChild(cardDiv)
-            console.log("made it here");}}}
+            columns[i].appendChild(cardDiv)}}}
 
 //Get random card to add (first from shuffled array)
-function getCardImage(level){
+function getCardImage(){
     const shuffledImages = shuffleCards(imagesByLevel[level]);
     const imageName = shuffledImages[0];
     return imageName;}
@@ -224,15 +227,6 @@ function createGuideScreen(){
     document.getElementById('guide-back-button').addEventListener('click', function () {
         guideScreen.style.display = 'none'
         menuScreen.style.display = "flex" })}
-
-function createAboutScreen(){
-    menuScreen.style.display='none'
-    const aboutScreen = document.getElementById('about-screen')
-    aboutScreen.style.display = "flex"
-    aboutScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenAbout.jpg')`
-    document.getElementById('about-back-button').addEventListener('click', function () {
-        aboutScreen.style.display = 'none'
-        menuScreen.style.display = "flex"})}
 
 function createHighScoreScreen(){
     menuScreen.style.display='none'
@@ -290,3 +284,4 @@ function displayHighScores(highScores) {
         li.textContent = `Score: ${highScores[i].score} Date:${highScores[i].date}`
         ol.appendChild(li)}
     highScoreList.appendChild(ol)}
+
