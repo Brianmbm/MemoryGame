@@ -1,18 +1,15 @@
-//TODO Prio Med: On win screen, add button to save highscore
-//TODO Prio Med: Show score during game
-//TODO Prio High: Add bonuses at end of round, show them in win screen
 //TODO Prio Low: Add click to continue dialogue in startscreen
 //TODO Prio Low: Add "sure you want to quit" dialogue
 //TODO Prio High: Use webcomponents
 //TODO Prio Med: Animations when switching views (maybe use opacitity, example in https://stackoverflow.com/questions/74831681/how-to-make-a-image-appear-and-disappear-through-simple-animation )
 //TODO Prio High: Use validation PDF (verify Css, javascript, automated testing)
 //FIXME Prio Low: can currently show more cards than 2 by clicking fast
-//FIXME Prio Low: Need time pause after last selection before game won/game over screen
-//FIXME Prio Low: Occasionaly the game stops adding cards. roundCounter and addcard function seem to work. Unclear why.
-
+//FIXME Prio Med: The game stops adding cards. Addnewcards is being called only once then stops 
+//INFO: Do not run live server from main Memory game folder in VS as it reloads page when writing to server files. Run from Client folder.
 const imagesLevelZero =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
 const imagesLevelOne =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg']
 const imagesLevelTwo =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg', 'card_6.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg', 'card_6.jpg']
+
 let selectedCards =[]
 let score = 0
 let roundCounter = 0;
@@ -31,7 +28,6 @@ function createStartScreen(){
     const startscreenDiv = document.getElementById('start-screen')
     startscreenDiv.style.display = "flex"
     startscreenDiv.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenLoading.jpg')`
-    //On click remove splash screen, add game board
     startscreenDiv.addEventListener('click', function () {
         startscreenDiv.style.display = "none"
         createMenu()})}
@@ -71,7 +67,7 @@ function createLevelScreen(){
     const levelTwoButton = document.getElementById('leveltwo-button')
     levelTwoButton.addEventListener('click', () => createGameBoard(2))}
 
-//Create intial game/gameboard
+
 function createGameBoard(level) {
     levelScreen.style.display = "none"
     const mainDiv = document.getElementById('main-game')
@@ -80,7 +76,6 @@ function createGameBoard(level) {
     mainDiv.style.width="95vw"
     let shuffledImages = shuffleCards(imagesByLevel[level])
     let counter = 0
-    //Clear columns from previous games
     for (let i = 0; i < columns.length; i++) {
             columns[i].innerHTML = ""
     }
@@ -104,10 +99,9 @@ let shuffleCards = (array) => {
         currentIndex--
         [array[currentIndex], array[randomIndex]] = [
             array[randomIndex], array[currentIndex]]
-    }
-    return array}
+    } return array}
 
-//Show cards when clicked
+
 function toggleCard(cardDiv, level) {
     const isCardBack = cardDiv.style.backgroundImage.includes('cardBack')
     const imageName = cardDiv.getAttribute('data-image')
@@ -147,12 +141,15 @@ function toggleCard(cardDiv, level) {
                 console.log(roundCounter)
             if (level === 0 && roundCounter % 3 === 0) {
                 if (score < 150) {
+                    roundCounter=0
                     addNewCards(level);}} 
             else if (level === 1 && roundCounter % 5 === 0) {
                 if (score < 250) {
+                    roundCounter=0
                     addNewCards(level);}} 
             else if (level === 2 && roundCounter % 7 === 0) {
                 if (score < 350) {
+                    roundCounter=0
                     addNewCards(level);}}
                    
             const numColumns = level + 2
@@ -168,6 +165,7 @@ function toggleCard(cardDiv, level) {
 
 //Add one card to each column after three attempts
 function addNewCards(level) {
+    console.log("called me")
     const numColumns = level + 2
     for (let i = 0; i < numColumns; i++) {
         for (let j = 0; j < 1; j++) {
@@ -182,7 +180,7 @@ function addNewCards(level) {
 
 //Get random card to add (first from shuffled array)
 function getCardImage(level){
-    let shuffledImages = shuffleCards(imagesByLevel[level]);
+    const shuffledImages = shuffleCards(imagesByLevel[level]);
     const imageName = shuffledImages[0];
     return imageName;}
 
@@ -193,8 +191,9 @@ function createWinScreen(){
     winScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenWon.jpg')`
 
     document.getElementById("win-score").textContent=`Final score: ${score}`
+    
     winbackButton = document.getElementById('winback-button')
-
+    sendHighScoreToServer(score)
     winbackButton.style.margin = "2vh"
     winbackButton.addEventListener('click', ()=>  {
         score = 0
@@ -237,6 +236,7 @@ function createAboutScreen(){
 
 function createHighScoreScreen(){
     menuScreen.style.display='none'
+    getHighScores()
     const highScreen = document.getElementById('highscore-screen')
     highScreen.style.display = "flex"
     highScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenHigh.jpg')`
@@ -260,7 +260,33 @@ function calculateBonus() {
         } else if (columnHeight === 2) {
             bonus += 50; 
         }
-    }
+    } return bonus;}   
 
-    return bonus;
-}   
+function sendHighScoreToServer(score) {
+    const url = 'http://localhost:4000/highscores'; 
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ score }),})
+    .then(response => {return response.json()})
+    .then(data => {console.log('High score sent successfully:', data)})}
+
+function getHighScores() {
+    const url = 'http://localhost:4000/highscores';
+    fetch(url)
+    .then(response => response.json())
+    .then(data => displayHighScores(data))}
+
+function displayHighScores(highScores) {
+    console.log('High Scores:', highScores)
+    const highScoreList = document.getElementById('highscore-list')
+    highScoreList.innerHTML = ''
+    highScores.sort((a, b) => b.score - a.score)
+    const ol = document.createElement('ol')
+    for (let i = 0; i < Math.min(highScores.length, 10); i++) {
+        const li = document.createElement('li')
+        li.textContent = `Score: ${highScores[i].score} Date:${highScores[i].date}`
+        ol.appendChild(li)}
+    highScoreList.appendChild(ol)}
