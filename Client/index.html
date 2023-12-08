@@ -64,17 +64,12 @@
         <button id="loseback-button" class="menubutton">Back to menu</button>
     </div>
 
-    <div id="highscore-screen" class="defaultscreen">
-        <div class="defaultrect">
-            <h1>TOP TEN SCORES</h1>
-            <div id="highscore-list"></div>
-        </div>
-        <button id="highscoreback-button" class="menubutton">Back to Menu</button>
-    </div>
+    <highscore-screen style="display: none;"></highscore-screen>
     <guide-screen style="display: none;"></guide-screen>
     <about-screen style="display: none;"></about-screen>
 
     <script src="Script/script.js"></script>
+    <script type="module" src="Script/highscorecomp.js"></script>
     <script type="module" src="Script/guidescreencomp.js"></script>
     <script type="module" src="Script/aboutscreencomp.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>

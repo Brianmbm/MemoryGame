@@ -60,8 +60,11 @@ function createMenu(){
         menuScreen.style.display = 'none'
         document.querySelector('about-screen').style.display = 'flex'})
 
-    const highscoreButton = document.getElementById('highscore-button')
-    highscoreButton.addEventListener('click', () => createHighScoreScreen())
+    const highscoreButton = document.getElementById('highscore-button');
+    highscoreButton.addEventListener('click', () => {
+        menuScreen.style.display = 'none'
+        document.querySelector('highscore-screen').style.display = 'flex'})
+
     const quitButton = document.getElementById('quit-button')
     quitButton.addEventListener('click', () => close())}
 
@@ -225,16 +228,6 @@ function createGameOverScreen(){
         gameoverScreen.style.display = 'none'
         menuScreen.style.display = "flex"})}
 
-function createHighScoreScreen(){
-    menuScreen.style.display='none'
-    getHighScores()
-    const highScreen = document.getElementById('highscore-screen')
-    highScreen.style.display = "flex"
-    highScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenHigh.jpg')`
-    document.getElementById('highscoreback-button').addEventListener('click', function () {
-        highScreen.style.display = 'none'
-        menuScreen.style.display = "flex"})}
-
 function getImageFolderPath() {
     return window.innerWidth < 480 ? '../../Resources/Small/' : '../../Resources/';
 }
@@ -262,22 +255,3 @@ function sendHighScoreToServer(score) {
         body: JSON.stringify({ score }),})
     .then(response => {return response.json()})
     .then(data => {console.log('High score sent successfully:', data)})}
-
-function getHighScores() {
-    const url = 'http://localhost:4000/highscores';
-    fetch(url)
-    .then(response => response.json())
-    .then(data => displayHighScores(data))}
-
-function displayHighScores(highScores) {
-    console.log('High Scores:', highScores)
-    const highScoreList = document.getElementById('highscore-list')
-    highScoreList.innerHTML = ''
-    highScores.sort((a, b) => b.score - a.score)
-    const ol = document.createElement('ol')
-    for (let i = 0; i < Math.min(highScores.length, 10); i++) {
-        const li = document.createElement('li')
-        li.textContent = `Score: ${highScores[i].score} Date:${highScores[i].date}`
-        ol.appendChild(li)}
-    highScoreList.appendChild(ol)}
-
