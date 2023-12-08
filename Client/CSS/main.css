@@ -19,8 +19,30 @@ body{
     align-items: center;
     justify-content: center;
     border-radius: 1vh;
+    animation: createBox 1s ease-in-out;
 }
-
+@keyframes createBox {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+.pulsetext{
+    font-size: 4vh;
+    margin: 4vh;
+    letter-spacing: 0.5vh;
+    align-self: flex-end;
+    margin-bottom: 80vh;
+    color: #5e2526;
+    animation: pulse 1s linear infinite;
+}
+@keyframes pulse {
+    50% {
+      opacity: 0;
+    }
+  }
 .maingame {
     display:none;
     flex-direction: column;
@@ -35,7 +57,7 @@ body{
     display: flex;
     border-radius: 1vh;
     padding: 2vh;
-    height:75vh;
+    height:68vh;
     width: fit-content;
     gap: 1vh;
     justify-content: center;
@@ -63,6 +85,15 @@ body{
     background-size:cover;
     cursor: pointer;
     margin: 1vh;
+    animation: dropAnimation 0.5s ease-in-out;
+}
+@keyframes dropAnimation {
+    from {
+        transform: translateY(-50vh);
+    }
+    to {
+        transform: translateY(0);
+    }
 }
 .defaultrect {
     display: flex;

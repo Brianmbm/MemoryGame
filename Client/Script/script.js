@@ -1,11 +1,10 @@
 //TODO Prio Low: Add click to continue dialogue in startscreen
 //TODO Prio Low: Add "sure you want to quit" dialogue
-//TODO Prio High: Use webcomponents
+//TODO Prio High: Implement web components to all views. 
 //TODO Prio Med: Animations when switching views (maybe use opacitity, example in https://stackoverflow.com/questions/74831681/how-to-make-a-image-appear-and-disappear-through-simple-animation )
 //TODO Prio High: Use validation PDF (verify Css, javascript, automated testing)
 //FIXME Prio Low: can currently show more cards than 2 by clicking fast, can also click on card in the settimeout before gameover.
 //TODO Prio Low: Fix highscore screen styling (fonts etc) 
-//TODO Prio Low: Change aboutscreen so it uses constructor and shadowroot and not callback (find out how to take style from main CSS sheet)
 //INFO: Do not run live server from main Memory game folder in VS as it reloads page when writing to server files. Run from Client folder.
 
 
