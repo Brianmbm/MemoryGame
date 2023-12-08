@@ -49,12 +49,17 @@ function createMenu(){
 
     const startButton = document.getElementById('start-button')
     startButton.addEventListener('click', () => createLevelScreen())
+
     const guideButton = document.getElementById('guide-button')
-    guideButton.addEventListener('click', () => createGuideScreen())
+    guideButton.addEventListener('click', () => {
+        menuScreen.style.display = 'none'
+        document.querySelector('guide-screen').style.display = 'flex'})
+
     const aboutButton = document.getElementById('about-button');
     aboutButton.addEventListener('click', () => {
         menuScreen.style.display = 'none'
         document.querySelector('about-screen').style.display = 'flex'})
+
     const highscoreButton = document.getElementById('highscore-button')
     highscoreButton.addEventListener('click', () => createHighScoreScreen())
     const quitButton = document.getElementById('quit-button')
@@ -220,15 +225,6 @@ function createGameOverScreen(){
         gameoverScreen.style.display = 'none'
         menuScreen.style.display = "flex"})}
 
-function createGuideScreen(){
-    menuScreen.style.display='none'
-    const guideScreen = document.getElementById('guide-screen')
-    guideScreen.style.display = "flex"
-    guideScreen.style.backgroundImage = `url('${getImageFolderPath()}SplashscreenGuide.jpg')`
-    document.getElementById('guide-back-button').addEventListener('click', function () {
-        guideScreen.style.display = 'none'
-        menuScreen.style.display = "flex" })}
-
 function createHighScoreScreen(){
     menuScreen.style.display='none'
     getHighScores()
@@ -245,7 +241,6 @@ function getImageFolderPath() {
 function calculateBonus() {
     let bonus = 0
     const numColumns = columns.length
-
     for (let i = 0; i < numColumns; i++) {
         const columnHeight = columns[i].childElementCount
         if (columnHeight === 0) {
