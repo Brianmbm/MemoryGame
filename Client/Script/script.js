@@ -7,6 +7,8 @@
 //TODO Prio Low: Fix highscore screen styling (fonts etc) 
 //TODO Prio Low: Change aboutscreen so it uses constructor and shadowroot and not callback (find out how to take style from main CSS sheet)
 //INFO: Do not run live server from main Memory game folder in VS as it reloads page when writing to server files. Run from Client folder.
+
+
 const imagesLevelZero =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg']
 const imagesLevelOne =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg']
 const imagesLevelTwo =['card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg', 'card_6.jpg', 'card_1.jpg', 'card_2.jpg', 'card_3.jpg', 'card_4.jpg', 'card_5.jpg', 'card_6.jpg']
